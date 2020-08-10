@@ -1,25 +1,11 @@
-from bioCalc.biocalc import BioCalc
+import os
 
-dna = "GAAGGTCACAGTGACGGTATGGCGCACCCATGGATTGCTTCACCGCGGTGATACATAGTCGATTTGGCTACCCCACCACCGAGTAGGAATCGATAGATTCTTCTTTCTTATAGAGCCTGAAGGTCTGCCAGACGAGTACCTAAATAGTTTATGTTGTTCGTCGAGAAGGGCATCTGGTCAGTACATTTATACGAACCTCCCCTGATGTAAATTCACCCGGGATGATGCACAATCCATTATAGTGTGCCCCGACCCCGCCTTCAACTTAATGCTGAAATGAACGTGCTCGAGTTTGCTTTATTCCTGGTCATACGCTGGGAGTGCAGACGAGTCCTCTGGAGCCAGATTGAGGGTATAGGTCGCGGACCCTAGTGCCAAAGCCCCCGAGGGGAGGCACATAGAGCTAGATGATCGACTCTCGGCTCGAAAACAGTTGACTCTTATCGCCCTCGGGTTACCGCACGACGTGACCCGGAGGCAACCTGCACAACTGGCTAATTTGGGGACACGTCCAACCTCGTGTAATCGTAGAAAAGATAGTTCATGGCACTTTGCTTTAGACACCCATCTTGTCTCCATGAATAACGGAGCTTGGATCAGATTTTGGGCCTGACAGAGTAGAATAACGCCAGCGGGTTACTCTGGAGGACAAAATAATGGCCGTGAAGCTAGCGAGTAGTCTCCTTAGTCCATTGAGGCCTGCGCGGCTTGGCCATTTCTTGAGTAGTAGAATTTAATCTTCCATCTGGTTGGGCAAGATATACCGGTAGCTAGGACAGTAGTAGCCGATTGCCCAGTCATCACGCCAGCAGCGCTAAAGATTAAGTCGTTGATCCTGGTGAAAAAAAAACGAGTCATTCCGAGTGACCGTGTGAGACCCACGACTTCCATGCGAACTAACCGGAGGAGAGTAGGGGA "
-bioCalc = BioCalc()
-print("****Get Nucleotides count****")
-countResult = bioCalc.nucleotide_count_in_dna(dna)
-print(("A: %s\nT: %s\nG: %s\nC: %s" % (countResult.ACount, countResult.TCount, countResult.GCount, countResult.CCount)))
-print("******************************")
+from bioCalc.models.nucleotide_info import NucleotideInfo
 
-dnaLength = len(dna)
-
-print("\n\n****Get Nucleotides percentage****")
-aPercent = bioCalc.nucleotide_percentage_in_dna(countResult.ACount, dnaLength)
-tPercent = bioCalc.nucleotide_percentage_in_dna(countResult.TCount, dnaLength)
-gPercent = bioCalc.nucleotide_percentage_in_dna(countResult.GCount, dnaLength)
-cPercent = bioCalc.nucleotide_percentage_in_dna(countResult.CCount, dnaLength)
-
-print(f"A%: {aPercent}\nT%: {tPercent}\nG%: {gPercent}\nC%: {cPercent}")
-print("******************************")
-
-print("\n\n****Get GC Nucleotides percentage****")
-gcCount = countResult.GCount + countResult.CCount
-gcPercent = bioCalc.nucleotide_percentage_in_dna(gcCount, dnaLength)
-print(f"GC%: {gcPercent}")
-print("******************************")
+with os.scandir('data') as files:
+    for file in files:
+        print(f"****Info about {file.name} ****\n\n")
+        dna = open(f"data/{file.name}")
+        nucleotide_info = NucleotideInfo(dna.read())
+        nucleotide_info.get_info();
+        print(f"\n\n****{file.name} info end****\n\n")
